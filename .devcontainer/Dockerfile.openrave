@@ -1,0 +1,10 @@
+ARG from
+
+FROM ${from}
+
+COPY openrave openrave
+# Install OpenRAVE
+RUN cd openrave && mkdir build && cd build \
+  	&& BOOST_ROOT=/usr/local cmake -DODE_USE_MULTITHREAD=ON -DCMAKE_CXX_STANDARD=11 -DOSG_DIR=/usr/local/lib64/ -DCMAKE_BUILD_TYPE=Release -DBoost_NO_BOOST_CMAKE=ON -DBoost_NO_SYSTEM_PATHS=TRUE -DBOOST_ROOT=/usr/local/ -DFCL_USE_STATISTICS=ON ..\
+	&& make -j `nproc` \
+	&& make install \
