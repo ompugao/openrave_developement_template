@@ -8,12 +8,17 @@ services:
       dockerfile: .devcontainer/Dockerfile.openrave
       args:
         from: ompugao/openrave-deps:melodic-desktop-full-cudnn8-gl
+        OPENRAVE_BUILD_TYPE: Debug
+        ROS_BUILD_TYPE: Debug
 
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ..:/workspace:cached
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTH}:${XAUTH}
+      - ./.openrave:/root/.openrave:rw
+      - ./.bash_history:/root/.bash_history:rw
+      - ./.ipython:/root/.ipython:rw
       #- /tmp/.docker.xauth:/tmp/.docker.xauth
       # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker-compose for details.
       # - /var/run/docker.sock:/var/run/docker.sock 
