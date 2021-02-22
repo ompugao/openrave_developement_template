@@ -5,6 +5,7 @@
 - docker
 - docker-compose
 - buildkit
+- nvidia-docker
 - (vscode)
 
 ## Usage
@@ -16,8 +17,13 @@
 docker buildx install
 cd path/to/openrave_docker_development_template
 bash ./set_xauth.sh
+touch .devcontainer/.bash_history
 git clone https://github.com/rdiankov/openrave
 # put whatever ros packages you want into catkin_ws directory
-# run vscode
+git clone https://github.com/personalrobotics/openrave_catkin catkin_ws/personalrobotics/openrave_catkin
+git clone https://github.com/personalrobotics/or_rviz catkin_ws/personalrobotics/or_rviz
+# run vscode, or
+cd .devcontainer/ && docker-compose up
+
 
 ```

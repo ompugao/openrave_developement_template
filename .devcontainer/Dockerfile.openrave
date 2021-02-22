@@ -1,3 +1,4 @@
+#syntax=docker/dockerfile:1.2
 ARG from
 ARG OPENRAVE_BUILD_TYPE=Release
 ARG ROS_BUILD_TYPE=Release
@@ -9,10 +10,10 @@ RUN pip install catkin-tools
 RUN apt update && apt -y install checkinstall
 
 FROM builder as openrave_builder
-COPY openrave openrave
+COPY openrave /workspace/openrave
 # Install OpenRAVE
-RUN --mount=type=cache,target=/root/.cache/sccache/ cd openrave && mkdir build && cd build \
-  	&& BOOST_ROOT=/usr/local cmake -DODE_USE_MULTITHREAD=ON -DCMAKE_CXX_STANDARD=11 -DOSG_DIR=/usr/local/lib64/ -DCMAKE_BUILD_TYPE=${OPENRAVE_BUILD_TYPE} -DBoost_NO_BOOST_CMAKE=ON -DBoost_NO_SYSTEM_PATHS=TRUE -DBOOST_ROOT=/usr/local/ -DFCL_USE_STATISTICS=ON -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ..\
+RUN --mount=type=cache,target=/root/.cache/sccache/ mkdir build_openrave && cd build_openrave \
+  	&& BOOST_ROOT=/usr/local cmake -DODE_USE_MULTITHREAD=ON -DCMAKE_CXX_STANDARD=11 -DOSG_DIR=/usr/local/lib64/ -DCMAKE_BUILD_TYPE=${OPENRAVE_BUILD_TYPE} -DBoost_NO_BOOST_CMAKE=ON -DBoost_NO_SYSTEM_PATHS=TRUE -DBOOST_ROOT=/usr/local/ -DFCL_USE_STATISTICS=ON -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache /workspace/openrave \
 	&& make -j `nproc` \
 	&& make install 
 # # uncomment the following lines when you omit openrave/build directory from this layer
@@ -22,10 +23,12 @@ RUN --mount=type=cache,target=/root/.cache/sccache/ cd openrave && mkdir build &
 # FROM builder as main
 # COPY --from=openrave_builder /tmp/*deb /tmp
 # RUN dpkg -i /tmp/*deb && rm /tmp/*deb
-COPY catkin_ws catkin_ws/src/
-RUN --mount=type=cache,target=/root/.cache/sccache/ cd catkin_ws \
-	&& . /root/ros_catkin_ws/parent/install_isolated/setup.sh \
+RUN mkdir -p ~/ros_catkin_ws/dev
+COPY catkin_ws /root/ros_catkin_ws/dev/src
+RUN --mount=type=cache,target=/root/.cache/sccache/ cd ~/ros_catkin_ws/dev \
+	&& . ~/ros_catkin_ws/parent/install_isolated/setup.sh \
 	&& BOOST_ROOT=/usr/local catkin build --verbose --no-status -DCMAKE_BUILD_TYPE=${ROS_BUILD_TYPE} -DBoost_NO_BOOST_CMAKE=ON -DBoost_NO_SYSTEM_PATHS=TRUE -DBOOST_ROOT=/usr/local/ -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache 
+	# && rm build logs -rf
 
 # FROM ${from}
 # COPY --from=openrave_builder /tmp/*deb /tmp

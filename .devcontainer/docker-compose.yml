@@ -14,6 +14,7 @@ services:
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ..:/workspace:cached
+      - ../catkin_ws:/root/ros_catkin_ws/dev/src:cached
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTH}:${XAUTH}
       - ./.openrave:/root/.openrave:rw
