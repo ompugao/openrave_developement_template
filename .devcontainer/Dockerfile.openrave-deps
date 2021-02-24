@@ -1,6 +1,6 @@
 ARG from
 
-FROM ${from}
+FROM ${from} as builder
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends build-essential cmake doxygen \
@@ -78,7 +78,8 @@ RUN mkdir -p ~/3rdparty && cd ~/3rdparty \
 	&& unzip libtorch-cxx11-abi-shared-with-deps-1.7.1+cu110.zip \
 	&& rm libtorch-cxx11-abi-shared-with-deps-1.7.1+cu110.zip
 
+FROM builder as dev
 # Install dev utils
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends gdb valgrind \
+	&& apt-get install -y --no-install-recommends gdb valgrind less vim tmux\
     && rm -rf /var/lib/apt/lists/*

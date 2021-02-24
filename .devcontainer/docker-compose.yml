@@ -3,13 +3,12 @@ version: '3'
 services:
   app:
     # Using a Dockerfile is optional, but included for completeness.
+    image: ompugao/openrave:melodic-desktop-full-cudnn8-gl
     build: 
       context: ..
       dockerfile: .devcontainer/Dockerfile.openrave
       args:
         from: ompugao/openrave-deps:melodic-desktop-full-cudnn8-gl
-        OPENRAVE_BUILD_TYPE: Debug
-        ROS_BUILD_TYPE: Debug
 
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
@@ -46,7 +45,9 @@ services:
     runtime: nvidia
     
     environment:
-      - XAUTHORITY=$XAUTH
-      - DISPLAY=$DISPLAY
-      - QT_X11_NO_MITSHM=1
+      XAUTHORITY: $XAUTH
+      DISPLAY: ":1"
+      QT_X11_NO_MITSHM: 1
+      #OPENRAVE_BUILD_TYPE: Release
+      #ROS_BUILD_TYPE: Release
 
