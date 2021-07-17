@@ -23,7 +23,7 @@ git clone https://github.com/rdiankov/openrave
 git clone https://github.com/personalrobotics/openrave_catkin catkin_ws/personalrobotics/openrave_catkin
 git clone https://github.com/personalrobotics/or_rviz catkin_ws/personalrobotics/or_rviz
 # run vscode, or
-cd .devcontainer/ && docker-compose up
+cd .devcontainer/ && bash build-deps.sh
 
 
 ```
