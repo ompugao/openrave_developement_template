@@ -4,7 +4,7 @@
 ## Prerequiresites
 1) docker: https://docs.docker.com/engine/install/ubuntu/
 2) docker-compose: https://docs.docker.com/compose/install/
-3) nvidia-docker: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+3) nvidia-docker2: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 4) vscode: Download from Ubuntu Software
 
 ## Usage
