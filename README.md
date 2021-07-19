@@ -8,26 +8,29 @@
 4) vscode: Download from Ubuntu Software
 
 ## Usage
-
 ```sh
-# run only once
-1) git clone https://github.com/ompugao/openrave_docker_development_template
-2) cd path/to/openrave_docker_development_template
-3) touch .devcontainer/.bash_history
-4) git clone https://github.com/ompugao/openrave.git
-5) git clone https://github.com/personalrobotics/openrave_catkin catkin_ws/personalrobotics/openrave_catkin
-6) cd catkin_ws/personalrobotics && git clone https://github.com/ompugao/or_rviz.git
-7) cd .. x2
-8) cd openrave && git checkout myworkingbranch && cd ../catkin_ws/personalrobotics/or_rviz && git checkout hotfix/add_dummy_setbkgndcolor_function
-9) cd .. x3
-10) sudo rm -rf /tmp/.docker.xauth
-11) bash ./set_xauth.sh
-(Remember to run 10 & 11 everytime you restart your computer!)
+# Run only once
+git clone https://github.com/ompugao/openrave_docker_development_template
+cd path/to/openrave_docker_development_template
+touch .devcontainer/.bash_history
+git clone https://github.com/ompugao/openrave -b myworkingbranch
+git clone https://github.com/personalrobotics/openrave_catkin catkin_ws/personalrobotics/openrave_catkin
+git clone https://github.com/ompugao/or_rviz.git catkin_ws/personalrobotics/or_rviz -b hotfix/add_dummy_setbkgndcolor_function
+# build dependant docker images
+cd .devcontainer && bash build-deps.sh
 
-Open vscode to continue:
-Open container using vscode: https://code.visualstudio.com/docs/remote/containers-tutorial
-2) Open folder to containers
-3) Start a new terminal.
-3) cd .devcontainer/ && bash build-deps.sh && docker-compose up
+# Remember to run the following two lines everytime you restart your computer
+sudo rm -rf /tmp/.docker.xauth
+bash ./set_xauth.sh
 
+# 1. you can use vscode as an IDE.
+code .
+# and open a container using vscode with remote development plugin
+# see: https://code.visualstudio.com/docs/remote/containers-tutorial
+
+# or
+# 2. you can use your terminal-based editor such as emacs and vim.
+cd .devcontainer/
+docker-compose --project-name openrave_docker_development_template -f docker-compose.yml up -d
+docker-compose --project-name openrave_docker_development_template -f docker-compose.yml exec -it /bin/bash
 ```
